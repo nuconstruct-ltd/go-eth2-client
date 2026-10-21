@@ -614,16 +614,17 @@ func (e *PayloadAttributesEvent) unpack(data *payloadAttributesEventJSON) error 
 
 	e.Data.ProposalSlot = phase0.Slot(proposalSlot)
 
-	if data.Data.ParentBlockNumber == "" {
-		return errors.New("parent block number missing")
+	// The Beacon API removes parent_block_number from Gloas onwards.
+	if data.Version < spec.DataVersionGloas {
+		if data.Data.ParentBlockNumber == "" {
+			return errors.New("parent block number missing")
+		}
+		parentBlockNumber, err := strconv.ParseUint(data.Data.ParentBlockNumber, 10, 64)
+		if err != nil {
+			return errors.Wrap(err, "invalid value for parent block number")
+		}
+		e.Data.ParentBlockNumber = parentBlockNumber
 	}
-
-	parentBlockNumber, err := strconv.ParseUint(data.Data.ParentBlockNumber, 10, 64)
-	if err != nil {
-		return errors.Wrap(err, "invalid value for parent block number")
-	}
-
-	e.Data.ParentBlockNumber = parentBlockNumber
 
 	if data.Data.ParentBlockRoot == "" {
 		return errors.New("parent block root missing")
