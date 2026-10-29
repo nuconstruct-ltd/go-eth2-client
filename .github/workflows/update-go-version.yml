@@ -13,7 +13,7 @@ permissions:
 jobs:
   update-go-version:
     name: Check and Update Go Version
-    runs-on: ubuntu-24.04
+    runs-on: amd64-spot
     steps:
       - name: Generate GitHub App Token
         id: app-token

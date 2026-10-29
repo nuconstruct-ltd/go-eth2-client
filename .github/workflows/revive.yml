@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   revive:
-    runs-on: ubuntu-22.04
+    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork && 'ubuntu-22.04' || 'amd64-spot' }}
     steps:
       - uses: actions/setup-go@v5
         with:
