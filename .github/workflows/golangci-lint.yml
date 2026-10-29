@@ -12,7 +12,7 @@ permissions:
 jobs:
   golangci:
     name: lint
-    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork && 'ubuntu-24.04' || 'amd64-spot' }}
+    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-24.04' || 'amd64-spot' }}
     steps:
       - uses: actions/checkout@v4
 

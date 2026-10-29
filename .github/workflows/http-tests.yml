@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork && 'ubuntu-24.04' || 'amd64-spot' }}
+    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-24.04' || 'amd64-spot' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
     # HTTP_BEARER_TOKEN_GLOAS, so do not attempt an unauthenticated run.
     if: ${{ vars.HTTP_ADDRESS_GLOAS != '' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     continue-on-error: true
-    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork && 'ubuntu-24.04' || 'amd64-spot' }}
+    runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-24.04' || 'amd64-spot' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
