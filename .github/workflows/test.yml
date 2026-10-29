@@ -8,6 +8,9 @@ jobs:
   test:
     runs-on: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'ubuntu-22.04' || 'amd64-spot' }}
     steps:
+      - name: Install C toolchain for race tests on owned runner
+        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends build-essential
       - uses: actions/setup-go@v5
         with:
           cache: false
